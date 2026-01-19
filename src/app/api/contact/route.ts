@@ -1,20 +1,17 @@
 import nodemailer from "nodemailer";
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "nodejs"; // IMPORTANT for nodemailer
+export const runtime = "nodejs";
 
 export async function OPTIONS() {
-  return NextResponse.json(
-    {},
-    {
-      status: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
-      },
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
     },
-  );
+  });
 }
 
 export async function POST(req: NextRequest) {
@@ -32,7 +29,7 @@ export async function POST(req: NextRequest) {
     });
 
     await transporter.sendMail({
-      from: `"${name}" <${process.env.SMTP_USER}>`, // safer (see note below)
+      from: `"Website Contact" <${process.env.SMTP_USER}>`,
       replyTo: email,
       to: "sacheeghimire@gmail.com",
       subject: `New message from ${name}`,
@@ -42,7 +39,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error(error);
+    console.error("Mail error:", error);
     return NextResponse.json({ error: "Email failed" }, { status: 500 });
   }
 }
