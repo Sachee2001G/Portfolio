@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
-export const dynamic = "forced-dynamic";
+export const dynamic = "force-dynamic";
 
 export async function OPTIONS() {
   return new Response(null, {
